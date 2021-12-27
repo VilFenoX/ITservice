@@ -20,6 +20,26 @@
 <form action="/loadBD" method="GET" >
     <button type="submit">Загрузить с БД</button>
 </form>
+<div th:if="${message}">
+<h2 th:text="${message}"/>
+</div>
+
+<div>
+    <form method="POST" enctype="multipart/form-data" action="/file_upload">
+        <table>
+            <tr><td></td><td><input type="file" name="file" /></td></tr>
+            <tr><td></td><td><input type="submit" value="Экспортировать" /></td></tr>
+        </table>
+    </form>
+</div>
+
+<div>
+    <ul>
+        <li th:each="file : ${files}">
+            <a th:href="${file}" th:text="${file}" />
+        </li>
+    </ul>
+</div>
 
 </form>
 <div>
