@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск</title>
+</head>
+<body>
+<form th:action="@{/foundBD}" method="GET"  >
+<!--    <label for="nameId">Введите ID </label>
+    <input type="text" th:field="${foundForm.id}"   id="nameId"/>-->
+    <br>
+    <label for="nameType">Введите тип (MagicSquare или subString) </label><br>
+    <br>
+    <input type="text" th:field="${foundForm.type}"   id="nameType"/><br>
+    <br>
+    <label for="nameDate">Введите дату (день, например: "yyyy.MM.dd")</label><br>
+    <br>
+    <input type="text" th:field="${foundForm.data}"  id="nameDate"/><br>
+    <br>
+    <input type="submit" value="ПОИСК!"/>
+</form>
+</body>
+</html>
