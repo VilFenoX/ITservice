@@ -1,11 +1,14 @@
 package com.itservice.model;
 
+import org.springframework.stereotype.Component;
+
 import java.io.*;
 
+@Component
 public class Serializator {
-    public boolean serialization(StringForm form, String fileName){
+    public boolean serialization(StringForm form, File f){
         boolean flag = false;
-        File f = new File(fileName);
+        //File f = new File(fileName);
         ObjectOutputStream outputStream = null;
         try {
             FileOutputStream fos = new FileOutputStream(f);
@@ -29,11 +32,11 @@ public class Serializator {
         }
         return flag;
     }
-    public StringForm deserialization(String fileName) throws InvalidObjectException {
-        File fr = new File(fileName);
+    public StringForm deserialization(File file) throws InvalidObjectException {
+       // File fr = new File(fileName);
         ObjectInputStream inputStream = null;
         try {
-            FileInputStream fis = new FileInputStream(fr);
+            FileInputStream fis = new FileInputStream(file);
             inputStream = new ObjectInputStream(fis);
             StringForm stringForm = (StringForm) inputStream.readObject();
             return stringForm;

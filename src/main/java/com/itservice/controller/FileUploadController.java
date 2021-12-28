@@ -1,65 +1,96 @@
 package com.itservice.controller;
 
+import com.itservice.model.Serializator;
+import com.itservice.model.StringForm;
 import com.itservice.storage.StorageFileNotFoundException;
 import com.itservice.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-import java.util.stream.Collectors;
+import java.io.*;
+
 
 @Controller
 public class FileUploadController {
 
 	private final StorageService storageService;
+	@Autowired
+	private Serializator serializator;
 
 	@Autowired
 	public FileUploadController(StorageService storageService) {
 		this.storageService = storageService;
 	}
 
-	@GetMapping("/file_upload")
-	public String listUploadedFiles(Model model) throws IOException {
+	@PostMapping("/file_download")
+	public String downloadedFiles(@RequestParam("file") MultipartFile multipartFile,
+								  @ModelAttribute("mq") StringForm stringForm,
+									Model model) throws IOException {
+		File filePath = new File("upload-dir");
+		filePath.mkdir();  // создаем каталог
+		File newfile = new File(filePath + "\\" + stringForm.value  + ".txt");
+		try {
+			newfile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		model.addAttribute("files", storageService.loadAll().map(
-				path -> MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
-						"serveFile", path.getFileName().toString()).build().toUri().toString())
-				.collect(Collectors.toList()));
+		try (OutputStream os = new FileOutputStream(newfile)) {
+			os.write(multipartFile.getBytes());
+		}
 
-		return "magic_square";
-	}
-
-	@GetMapping("/files/{filename:.+}")
-	@ResponseBody
-	public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
-
-		Resource file = storageService.loadAsResource(filename);
-		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-				"attachment; filename=\"" + file.getFilename() + "\"").body(file);
+		model.addAttribute("mq", serializator.deserialization(newfile));
+		//System.out.println(serializator.deserialization(newfile).toString());
+		return "/magic_square";
 	}
 
 	@PostMapping("/file_upload")
-	public String handleFileUpload(@RequestParam("file") MultipartFile file,
+	public String handleFileUpload(@ModelAttribute("mq") StringForm stringForm,
 			RedirectAttributes redirectAttributes) {
 
-		storageService.store(file);
-		redirectAttributes.addFlashAttribute("message",
-				"You successfully uploaded " + file.getOriginalFilename() + "!");
+		stringForm.setType("MagicSquare");
+		//System.out.println(stringForm);
+		File filePath = new File("upload-dir");
+		filePath.mkdir();  // создаем каталог
+		File fileFile = new File(filePath + "\\" + stringForm.value  + ".txt");
+		try {
+			fileFile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    serializator.serialization(stringForm, fileFile);
+		InputStream stream = null;
+		try {
+			stream = new FileInputStream(fileFile);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		MultipartFile multipartFileToSend = null;
+		try {
+			multipartFileToSend = new MockMultipartFile("file", fileFile.getName(), MediaType.TEXT_HTML_VALUE, stream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		return "redirect:/";
+		storageService.store(multipartFileToSend);
+		redirectAttributes.addFlashAttribute("message",
+				"You successfully uploaded " + multipartFileToSend.getOriginalFilename() + "!");
+
+		return "redirect:/magic_square";
 	}
 
 	@ExceptionHandler(StorageFileNotFoundException.class)
 	public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
 		return ResponseEntity.notFound().build();
 	}
+
+
 
 }

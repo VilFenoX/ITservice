@@ -23,23 +23,18 @@
 <div th:if="${message}">
 <h2 th:text="${message}"/>
 </div>
+<form method="POST" action="/file_upload"  th:object="${mq}">
+            <input type="hidden" th:field="*{value}"  th:value = "*{value}"/>
+            <input type="hidden" th:field="*{type}"  th:value = "*{type}"/>
+            <input type="hidden" th:field="*{result}"  th:value = "*{result}"/>
+            <input type="submit" value="Экспортировать" />
+</form><br>
 
-<div>
-    <form method="POST" enctype="multipart/form-data" action="/file_upload">
-        <table>
-            <tr><td></td><td><input type="file" name="file" /></td></tr>
-            <tr><td></td><td><input type="submit" value="Экспортировать" /></td></tr>
-        </table>
-    </form>
-</div>
-
-<div>
-    <ul>
-        <li th:each="file : ${files}">
-            <a th:href="${file}" th:text="${file}" />
-        </li>
-    </ul>
-</div>
+<form method="POST" enctype="multipart/form-data" action="/file_download"  th:object="${mq}">
+    <input type="hidden" th:field="*{value}"  th:value = "*{value}"/>
+    <input type="file" name="file" /><br>
+    <input type="submit" value="Импортировать" />
+</form>
 
 </form>
 <div>

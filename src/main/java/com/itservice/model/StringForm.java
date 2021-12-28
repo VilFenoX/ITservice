@@ -10,9 +10,9 @@ import java.util.List;
 @ToString
 public class StringForm implements Serializable {
     public String value;
-    //public int[][] value2;
-    public int sum=0;
-    public List<String> result;
-    //public int[][] res2;
+    public transient int sum=0;
+    public transient List<String> result;
+    public String type;
+
 
 }
