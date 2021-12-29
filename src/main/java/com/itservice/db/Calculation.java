@@ -20,9 +20,9 @@ public class Calculation {
     @ElementCollection
     private List<String> strings;
 
-/*    @Column(name = "num")
+    @Column(name = "string")
     @ElementCollection
-    private List<Integer> num;*/
+    private List<String> stringsTwo;
 
     @Column(name = "type")
     private String type;

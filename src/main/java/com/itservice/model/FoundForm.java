@@ -1,9 +1,5 @@
 package com.itservice.model;
 
-
-import lombok.ToString;
-
-//@ToString
 public class FoundForm {
    public Long id;
    public String type;
