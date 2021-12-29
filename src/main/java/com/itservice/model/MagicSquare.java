@@ -1,11 +1,7 @@
 package com.itservice.model;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -29,8 +25,6 @@ public class MagicSquare {
             for (int j = 0; j < n; j++) square[i][j] = ++k;
         used = new boolean[n * n + 1];
         for (int i = 0; i < n * n + 1; i++) used[i] = false;
-       // this.n = n;
-       // this.total = 0;
         magicSum = n * (n * n + 1) / 2;
     }
 
@@ -52,12 +46,12 @@ public class MagicSquare {
         return true;
     }
 
-   public void count(int step, int[] fromView) { //подсчитать с выводом
+    public void count(int step, int[] fromView) { //подсчитать с выводом
         if (step == n * n) {
             if (isValid()) {
                 total++;
-               // outputSolution();
-               // System.out.println();
+                // outputSolution();
+                // System.out.println();
                 sum(n, fromView);
             }
             return;
@@ -107,8 +101,8 @@ public class MagicSquare {
         int sum = 0;
         for (int r = 0; r < n; r++) {
             for (int c = 0; c < n; c++) {
-             sum +=  Math.abs( square[r][c]- matrix[r][c]) ;
-                
+                sum +=  Math.abs( square[r][c]- matrix[r][c]) ;
+
             }
         }
         if(sum<totalSum){
@@ -120,18 +114,18 @@ public class MagicSquare {
         return sum;
     }
 
-   public void returnStringForm(){
-       // StringBuilder res = new StringBuilder();
-       List<String>  res = new ArrayList<>();
+    public void returnStringForm(){
+        // StringBuilder res = new StringBuilder();
+        List<String>  res = new ArrayList<>();
         stringForm.setValue("");
         for (int r = 0; r < n; r++) {
-           for (int c = 0; c < n; c++) {
-               res.add(String.valueOf(finalMatrix[r][c]));
-             //  System.out.print(finalMatrix[r][c]);
-           }
-       }
+            for (int c = 0; c < n; c++) {
+                res.add(String.valueOf(finalMatrix[r][c]));
+                //  System.out.print(finalMatrix[r][c]);
+            }
+        }
         stringForm.setResult(res);
-       // stringForm.setRes2(finalMatrix);
+        // stringForm.setRes2(finalMatrix);
         stringForm.setSum(totalSum);
 
     }
@@ -150,7 +144,6 @@ public class MagicSquare {
         count(0, split(fromView));
         return stringForm;
     }
-
 
 /*
    public static void main(String[] args) {

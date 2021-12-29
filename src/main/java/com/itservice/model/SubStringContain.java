@@ -2,11 +2,13 @@ package com.itservice.model;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
+import java.util.stream.Stream;
 
 @Component
 public class SubStringContain {
+    StringForm stringForm = new StringForm();
+
     /*public static void main(String args[]){
         String[] a1={"tarp", "mice", "bull"};
         String[] a2={"lively", "alive", "harp", "sharp", "armstrong"};
@@ -34,5 +36,19 @@ public class SubStringContain {
             }
         }
         return false;
+    }
+
+    public String[] split(String valueFromView){
+
+        return valueFromView.split(",");
+
+    }
+
+    public StringForm start(String value, String valueTwo) {
+        inArray(split(value),split(valueTwo));
+        stringForm.setValue(value);
+        stringForm.setValueTwo(valueTwo);
+        stringForm.setResult(Arrays.asList(inArray(split(value),split(valueTwo))));
+        return stringForm;
     }
 }

@@ -4,6 +4,7 @@ import com.itservice.db.Calculation;
 import com.itservice.model.FoundForm;
 import com.itservice.model.MagicSquare;
 import com.itservice.model.StringForm;
+import com.itservice.model.SubStringContain;
 import com.itservice.repository.CalculationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,8 @@ public class MainController {
     @Autowired
     private MagicSquare magicSquare;
     @Autowired
+    SubStringContain subString;
+    @Autowired
     CalculationRepository calculationRepository;
 
     @GetMapping("/form_calculation")
@@ -33,20 +36,20 @@ public class MainController {
     public String calculate(@ModelAttribute("stringForm") StringForm form,
                             Model model){
         StringForm stringForm = new StringForm();
-       if ((form.getType() == null)){
+        if ((form.getType() == null)){
             model.addAttribute("message", "Выберите тип задачи");
         } else
         if(form.getType().equals("magicSquare")) {
             stringForm = magicSquare.start(form.getValue());
-      }else if(form.getType().equals("subString")) {
-            stringForm = magicSquare.start(form.getValue()); //////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        }else if(form.getType().equals("subString")) {
+            stringForm = subString.start(form.getValue(),form.getValueTwo()); //////!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
-          stringForm.setValue(form.getValue());
-          stringForm.setType(form.getType());
-          List<String> types = Arrays.asList("magicSquare", "subString");
-          model.addAttribute("types", types);
-          model.addAttribute("stringForm", stringForm);
-          return "/form_calculation";
+        stringForm.setValue(form.getValue());
+        stringForm.setType(form.getType());
+        List<String> types = Arrays.asList("magicSquare", "subString");
+        model.addAttribute("types", types);
+        model.addAttribute("stringForm", stringForm);
+        return "/form_calculation";
 
     }
 
@@ -57,6 +60,7 @@ public class MainController {
         Calculation calculation = new Calculation();
         //Date data = new Date();
         calculation.setStrings(Arrays.asList(form.getValue().split(",")));
+        calculation.setStringsTwo(Arrays.asList(form.getValueTwo().split(",")));
         if(form.getType().equals("magicSquare")) {
             calculation.setType("magicSquare");
         } else {
@@ -83,11 +87,11 @@ public class MainController {
     }
 
     @GetMapping("/list/{id}")
-    //  @PreAuthorize("hasAuthority('developers:read')")
     public String listBD(@PathVariable Long id, Model model){
         Calculation calculation = calculationRepository.findById(id).get();
         StringForm stringForm = new StringForm();
         stringForm.setValue(String.join(",", calculation.getStrings()));
+        stringForm.setValueTwo(String.join(",", calculation.getStringsTwo()));
         stringForm.setType(calculation.getType());
         List<String> types = Arrays.asList("magicSquare", "subString");
         model.addAttribute("types", types);

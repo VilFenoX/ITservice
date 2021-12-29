@@ -33,7 +33,7 @@ public class FileSystemStorageService implements com.itservice.storage.StorageSe
 				throw new com.itservice.storage.StorageException("Failed to store empty file.");
 			}
 			Path destinationFile = this.rootLocation.resolve(
-					Paths.get(file.getOriginalFilename()))
+							Paths.get(file.getOriginalFilename()))
 					.normalize().toAbsolutePath();
 			if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
 				// This is a security check
@@ -42,7 +42,7 @@ public class FileSystemStorageService implements com.itservice.storage.StorageSe
 			}
 			try (InputStream inputStream = file.getInputStream()) {
 				Files.copy(inputStream, destinationFile,
-					StandardCopyOption.REPLACE_EXISTING);
+						StandardCopyOption.REPLACE_EXISTING);
 			}
 		}
 		catch (IOException e) {
@@ -54,8 +54,8 @@ public class FileSystemStorageService implements com.itservice.storage.StorageSe
 	public Stream<Path> loadAll() {
 		try {
 			return Files.walk(this.rootLocation, 1)
-				.filter(path -> !path.equals(this.rootLocation))
-				.map(this.rootLocation::relativize);
+					.filter(path -> !path.equals(this.rootLocation))
+					.map(this.rootLocation::relativize);
 		}
 		catch (IOException e) {
 			throw new com.itservice.storage.StorageException("Failed to read stored files", e);

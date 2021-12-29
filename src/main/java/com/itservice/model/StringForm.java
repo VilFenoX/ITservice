@@ -2,7 +2,6 @@ package com.itservice.model;
 
 import lombok.Data;
 import lombok.ToString;
-
 import java.io.Serializable;
 import java.util.List;
 

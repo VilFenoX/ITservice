@@ -18,15 +18,17 @@
     </div>
     <label for="name">Введите значения через запятую </label><br>
     <input type="text" th:field="*{value}"  th:value = "*{value}" id="name"/><br>
+    <br>
     <input type="text" th:unless="${stringForm.type == 'magicSquare'}"
-                       th:field="*{valueTwo}"
-                       th:value = "*{valueTwo}" id="nameTwo"/><br>
+           th:field="*{valueTwo}"
+           th:value = "*{valueTwo}" id="nameTwo"/><br>
     <br>
     <input type="submit" value="Calculate!"/>
 </form>
 
 <form action="/saveBD" method="post" th:object="${stringForm}">
     <input type="hidden" th:field="*{value}"  th:value = "*{value}"/><br>
+    <input type="hidden" th:field="*{valueTwo}"  th:value = "*{valueTwo}"/><br>
     <input type="hidden" th:field="*{type}"  th:value = "*{type}"/><br>
     <button type="submit">сохранить в БД</button>
 </form>
@@ -36,10 +38,11 @@
 </form><br>
 
 <form method="POST" action="/file_upload"  th:object="${stringForm}">
-            <input type="hidden" th:field="*{value}"  th:value = "*{value}"/>
-            <input type="hidden" th:field="*{type}"  th:value = "*{type}"/>
-            <input type="hidden" th:field="*{result}"  th:value = "*{result}"/>
-            <input type="submit" value="Экспортировать" />
+    <input type="hidden" th:field="*{value}"  th:value = "*{value}"/>
+    <input type="hidden" th:field="*{valueTwo}"  th:value = "*{valueTwo}"/>
+    <input type="hidden" th:field="*{type}"  th:value = "*{type}"/>
+    <input type="hidden" th:field="*{result}"  th:value = "*{result}"/>
+    <input type="submit" value="Экспортировать" />
 </form><br>
 
 <form method="POST" enctype="multipart/form-data" action="/file_download"  th:object="${stringForm}">
@@ -53,10 +56,10 @@
 <div>
     <h2>Результат : </h2>
     <input type="text"   th:value = "${stringForm.result}" />
-   <!-- <input type="text"   th:value = "${mq.res2}" />-->
+    <!-- <input type="text"   th:value = "${mq.res2}" />-->
     <a th:if="${stringForm.type == 'magicSquare'}">
-    <h2 >Стоимость : </h2>
-    <input type="text"  th:value = "${stringForm.sum}" />
+        <h2 >Стоимость : </h2>
+        <input type="text"  th:value = "${stringForm.sum}" />
     </a>
 </div>
 <br>

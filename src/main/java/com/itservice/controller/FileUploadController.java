@@ -34,7 +34,7 @@ public class FileUploadController {
 	@PostMapping("/file_download")
 	public String downloadedFiles(@RequestParam("file") MultipartFile multipartFile,
 								  @ModelAttribute("stringForm") StringForm stringForm,
-									Model model) throws IOException {
+								  Model model) throws IOException {
 		File filePath = new File("upload-dir");
 		filePath.mkdir();  // создаем каталог
 		File newfile = new File(filePath + "\\" + stringForm.value  + ".txt");
@@ -56,7 +56,7 @@ public class FileUploadController {
 
 	@PostMapping("/file_upload")
 	public String handleFileUpload(@ModelAttribute("stringForm") StringForm stringForm,
-			RedirectAttributes redirectAttributes) {
+								   RedirectAttributes redirectAttributes) {
 
 		File filePath = new File("upload-dir");
 		filePath.mkdir();  // создаем каталог
@@ -66,7 +66,7 @@ public class FileUploadController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	    serializator.serialization(stringForm, fileFile);
+		serializator.serialization(stringForm, fileFile);
 		InputStream stream = null;
 		try {
 			stream = new FileInputStream(fileFile);

@@ -33,7 +33,7 @@ public class Serializator {
         return flag;
     }
     public StringForm deserialization(File file) throws InvalidObjectException {
-       // File fr = new File(fileName);
+        // File fr = new File(fileName);
         ObjectInputStream inputStream = null;
         try {
             FileInputStream fis = new FileInputStream(file);
