@@ -10,6 +10,7 @@ import java.util.List;
 @ToString
 public class StringForm implements Serializable {
     public String value;
+    public String valueTwo;
     public transient int sum=0;
     public transient List<String> result;
     public String type;

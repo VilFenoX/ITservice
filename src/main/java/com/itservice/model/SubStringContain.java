@@ -1,10 +1,13 @@
 package com.itservice.model;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Set;
 import java.util.TreeSet;
 
+@Component
 public class SubStringContain {
-    public static void main(String args[]){
+    /*public static void main(String args[]){
         String[] a1={"tarp", "mice", "bull"};
         String[] a2={"lively", "alive", "harp", "sharp", "armstrong"};
 
@@ -12,7 +15,7 @@ public class SubStringContain {
         for(int i=0; i<a3.length; i++){
             System.out.println(a3[i]);
         }
-    }
+    }*/
 
     public static String[] inArray(String[] array1, String[] array2) {
         Set<String> res = new TreeSet<>();

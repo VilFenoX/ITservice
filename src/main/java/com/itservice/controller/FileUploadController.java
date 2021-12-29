@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 
 
 @Controller
@@ -31,7 +33,7 @@ public class FileUploadController {
 
 	@PostMapping("/file_download")
 	public String downloadedFiles(@RequestParam("file") MultipartFile multipartFile,
-								  @ModelAttribute("mq") StringForm stringForm,
+								  @ModelAttribute("stringForm") StringForm stringForm,
 									Model model) throws IOException {
 		File filePath = new File("upload-dir");
 		filePath.mkdir();  // создаем каталог
@@ -45,18 +47,17 @@ public class FileUploadController {
 		try (OutputStream os = new FileOutputStream(newfile)) {
 			os.write(multipartFile.getBytes());
 		}
-
-		model.addAttribute("mq", serializator.deserialization(newfile));
-		//System.out.println(serializator.deserialization(newfile).toString());
-		return "/magic_square";
+		List<String> types = Arrays.asList("magicSquare", "subString");
+		model.addAttribute("types", types);
+		model.addAttribute("stringForm", serializator.deserialization(newfile));
+		System.out.println(serializator.deserialization(newfile).toString());
+		return "form_calculation";
 	}
 
 	@PostMapping("/file_upload")
-	public String handleFileUpload(@ModelAttribute("mq") StringForm stringForm,
+	public String handleFileUpload(@ModelAttribute("stringForm") StringForm stringForm,
 			RedirectAttributes redirectAttributes) {
 
-		stringForm.setType("MagicSquare");
-		//System.out.println(stringForm);
 		File filePath = new File("upload-dir");
 		filePath.mkdir();  // создаем каталог
 		File fileFile = new File(filePath + "\\" + stringForm.value  + ".txt");
@@ -83,7 +84,7 @@ public class FileUploadController {
 		redirectAttributes.addFlashAttribute("message",
 				"You successfully uploaded " + multipartFileToSend.getOriginalFilename() + "!");
 
-		return "redirect:/magic_square";
+		return "redirect:/form_calculation";
 	}
 
 	@ExceptionHandler(StorageFileNotFoundException.class)
