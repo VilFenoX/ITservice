@@ -17,7 +17,7 @@ GUI:
 В качестве СУБД используется H2. 
 В качестве фреймворка: Spring + ThymeLeaf.
 ***
-![ITser](бот.JPG)
+![ITser](ITservice.JPG)
 ***
 ### МОЙ САЙТ
 [Сайт](https://vilsurmurtazin.wixsite.com/index)
